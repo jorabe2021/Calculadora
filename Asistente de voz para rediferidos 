@@ -1,0 +1,128 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyO58/ai80CLXCbJsCbePB9k",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/jorabe2021/Calculadora/blob/master/Asistente%20de%20voz%20para%20rediferidos%20\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 576
+        },
+        "id": "4y_HpVmlZPJ3",
+        "outputId": "103fb116-b4ec-4a85-8185-9e9b23dd2966"
+      },
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "ModuleNotFoundError",
+          "evalue": "No module named 'speech_recognition'",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mModuleNotFoundError\u001b[0m                       Traceback (most recent call last)",
+            "\u001b[0;32m<ipython-input-2-86b127584d3d>\u001b[0m in \u001b[0;36m<cell line: 1>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0;32mimport\u001b[0m \u001b[0mspeech_recognition\u001b[0m \u001b[0;32mas\u001b[0m \u001b[0msr\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      2\u001b[0m \u001b[0;32mimport\u001b[0m \u001b[0mpyttsx3\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      3\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0;31m# Inicializar el motor de texto a voz\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      5\u001b[0m \u001b[0mengine\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mpyttsx3\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0minit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mModuleNotFoundError\u001b[0m: No module named 'speech_recognition'",
+            "",
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0;32m\nNOTE: If your import is failing due to a missing package, you can\nmanually install dependencies using either !pip or !apt.\n\nTo view examples of installing some common dependencies, click the\n\"Open Examples\" button below.\n\u001b[0;31m---------------------------------------------------------------------------\u001b[0m\n"
+          ],
+          "errorDetails": {
+            "actions": [
+              {
+                "action": "open_url",
+                "actionText": "Open Examples",
+                "url": "/notebooks/snippets/importing_libraries.ipynb"
+              }
+            ]
+          }
+        }
+      ],
+      "source": [
+        "\n",
+        "import speech_recognition as sr\n",
+        "import pyttsx3\n",
+        "\n",
+        "# Inicializar el motor de texto a voz\n",
+        "engine = pyttsx3.init()\n",
+        "engine.setProperty('rate', 150)  # Velocidad de habla\n",
+        "\n",
+        "# Función para convertir texto a voz\n",
+        "def speak(text):\n",
+        "    engine.say(text)\n",
+        "    engine.runAndWait()\n",
+        "\n",
+        "# Configuración del reconocedor de voz\n",
+        "recognizer = sr.Recognizer()\n",
+        "\n",
+        "# Mensaje inicial\n",
+        "speak(\"Buenas tardes, me presento. Mi nombre es ejecutiv@ financiero del grupo Bancolombia.\")\n",
+        "\n",
+        "# Función principal del asistente\n",
+        "def voice_assistant():\n",
+        "    with sr.Microphone() as source:\n",
+        "        recognizer.adjust_for_ambient_noise(source, duration=1)\n",
+        "        speak(\"¿Cómo te encuentras el día de hoy?\")\n",
+        "\n",
+        "        while True:\n",
+        "            print(\"Escuchando...\")\n",
+        "            audio = recognizer.listen(source)\n",
+        "\n",
+        "            try:\n",
+        "                # Convertir audio a texto\n",
+        "                command = recognizer.recognize_google(audio, language=\"es-ES\").lower()\n",
+        "                print(f\"Usuario dijo: {command}\")\n",
+        "\n",
+        "                # Responder basado en palabras clave del guión\n",
+        "                if \"tarjeta\" in command or \"tdc\" in command:\n",
+        "                    speak(\"Nos estamos comunicando con usted dado que tiene una tarjeta de crédito con nosotros que ha finalizado con un capital adeudado.\")\n",
+        "\n",
+        "                elif \"oportunidad\" in command or \"comportamiento\" in command:\n",
+        "                    speak(\"Por su excelente comportamiento financiero, le vamos a brindar la oportunidad de que este mes no cancele absolutamente nada.\")\n",
+        "\n",
+        "                elif \"cuotas\" in command:\n",
+        "                    speak(\"¿Le quedan cómodas estas cuotas?\")\n",
+        "\n",
+        "                elif \"salir\" in command:\n",
+        "                    speak(\"Gracias por su tiempo. Que tenga un buen día.\")\n",
+        "                    break\n",
+        "\n",
+        "                else:\n",
+        "                    speak(\"No entendí esa parte, ¿podrías repetirlo?\")\n",
+        "\n",
+        "            except sr.UnknownValueError:\n",
+        "                print(\"No se pudo entender el audio\")\n",
+        "                speak(\"No se pudo entender el audio, ¿puedes repetirlo?\")\n",
+        "            except sr.RequestError:\n",
+        "                print(\"Error al comunicarse con el servicio de reconocimiento de voz\")\n",
+        "                speak(\"Hubo un problema con el reconocimiento de voz.\")\n",
+        "\n",
+        "# Ejecutar el asistente\n",
+        "voice_assistant()"
+      ]
+    }
+  ]
+}
